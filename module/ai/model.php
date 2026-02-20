@@ -218,6 +218,14 @@ class aiModel extends model
             $credentials->$credKey = $model->$credKey;
         }
 
+        if(!empty($this->config->ai->vendorList[$model->vendor]['optionalCredentials']))
+        {
+            foreach($this->config->ai->vendorList[$model->vendor]['optionalCredentials'] as $credKey)
+            {
+                if(!empty($model->$credKey)) $credentials->$credKey = $model->$credKey;
+            }
+        }
+
         $modelConfig = new stdclass();
         $modelConfig->name        = $model->name;
         $modelConfig->desc        = $model->description;
@@ -400,7 +408,7 @@ class aiModel extends model
     public function testModelConnection($modelID)
     {
         $this->useLanguageModel($modelID);
-        if($this->config->ai->models[$this->modelConfig->type] == 'ernie' || $this->modelConfig->vendor == 'azure' || $this->modelConfig->type == 'openai-gpt4' || $this->modelConfig->vendor == 'openaiCompatible')
+        if($this->config->ai->models[$this->modelConfig->type] == 'ernie' || $this->modelConfig->vendor == 'azure' || $this->modelConfig->type == 'openai-gpt4' || $this->modelConfig->vendor == 'openaiCompatible' || $this->modelConfig->vendor == 'openrouter' || $this->modelConfig->vendor == 'ollama')
         {
             $messages = array((object)array('role' => 'user', 'content' => 'test'));
             $result = $this->converse($modelID, $messages, array('maxTokens' => 1));
@@ -433,7 +441,7 @@ class aiModel extends model
 
         /* Set auth and content-type headers. */
         $requestHeaders = array();
-        if(isset($this->config->ai->$modelType->api->$modelVendor->authFormat)) $requestHeaders[] = sprintf($this->config->ai->$modelType->api->$modelVendor->authFormat, $this->modelConfig->key);
+        if(isset($this->config->ai->$modelType->api->$modelVendor->authFormat) && !empty($this->modelConfig->key)) $requestHeaders[] = sprintf($this->config->ai->$modelType->api->$modelVendor->authFormat, $this->modelConfig->key);
         $requestHeaders[] = isset($this->config->ai->$modelType->contentType[$type]) ? $this->config->ai->$modelType->contentType[$type] : $this->config->ai->$modelType->contentType[''];
 
         /* Assemble request url. */
@@ -446,6 +454,14 @@ class aiModel extends model
             elseif($modelVendor == 'azure')
             {
                 $url = sprintf($this->config->ai->openai->api->azure->format, $this->modelConfig->resource, $this->modelConfig->deployment, $this->config->ai->openai->api->methods[$type], $this->config->ai->openai->api->azure->apiVersion);
+            }
+            elseif($modelVendor == 'openrouter')
+            {
+                $url = sprintf($this->config->ai->openai->api->openrouter->format, $this->config->ai->openai->api->methods[$type]);
+            }
+            elseif($modelVendor == 'ollama')
+            {
+                $url = sprintf($this->config->ai->openai->api->ollama->format, rtrim($this->modelConfig->base, '/'), $this->config->ai->openai->api->methods[$type]);
             }
             else
             {
@@ -591,6 +607,9 @@ class aiModel extends model
         /* Models of the same type may differ in version, in which case they are stored as an array. */
         $modelName = $this->config->ai->$modelType->model->$type;
         if(is_array($modelName)) $modelName = $modelName[$this->modelConfig->type];
+
+        /* For providers with user-specified model names (e.g. OpenRouter, Ollama), use from credentials. */
+        if(empty($modelName) && !empty($this->modelConfig->model)) $modelName = $this->modelConfig->model;
 
         $postData = new stdclass();
         $postData->model = $modelName;

@@ -754,6 +754,7 @@ $lang->ai->models->key            = 'API Key';
 $lang->ai->models->secret         = 'Secret Key';
 $lang->ai->models->resource       = 'Resource';
 $lang->ai->models->deployment     = 'Deployment';
+$lang->ai->models->model          = '模型标识';
 $lang->ai->models->proxyType      = '代理类型';
 $lang->ai->models->proxyAddr      = '代理地址';
 $lang->ai->models->description    = '描述';
@@ -801,15 +802,21 @@ $lang->ai->models->typeList = array();
 $lang->ai->models->typeList['openai-gpt35'] = 'OpenAI / GPT-3.5';
 $lang->ai->models->typeList['openai-gpt4']  = 'OpenAI / GPT-4';
 $lang->ai->models->typeList['baidu-ernie']  = '百度 / 文心一言';
+$lang->ai->models->typeList['openrouter']   = 'OpenRouter';
+$lang->ai->models->typeList['ollama']       = 'Ollama (本地)';
 
 $lang->ai->models->vendorList = new stdclass();
 $lang->ai->models->vendorList->{'openai-gpt35'} = array('openai' => 'OpenAI', 'azure' => 'Azure', 'openaiCompatible' => '自定义');
 $lang->ai->models->vendorList->{'openai-gpt4'}  = array('openai' => 'OpenAI', 'azure' => 'Azure', 'openaiCompatible' => '自定义');
 $lang->ai->models->vendorList->{'baidu-ernie'}  = array('baidu' => '百度千帆大模型平台');
+$lang->ai->models->vendorList->{'openrouter'}   = array('openrouter' => 'OpenRouter');
+$lang->ai->models->vendorList->{'ollama'}       = array('ollama' => 'Ollama');
 
 $lang->ai->models->vendorTips = new stdclass();
 $lang->ai->models->vendorTips->azure            = 'Azure 中 OpenAI GPT 版本 (3.5 或 4) 需要在创建资源时指定。';
 $lang->ai->models->vendorTips->openaiCompatible = '指定的 API 需要支持 Function Calling，否则某些功能可能无法正常使用。';
+$lang->ai->models->vendorTips->openrouter       = 'OpenRouter 提供数百种模型的访问。请输入模型标识（例如 anthropic/claude-3.5-sonnet、openai/gpt-4o）。';
+$lang->ai->models->vendorTips->ollama           = 'Ollama 在本地运行模型。本地部署时 API Key 为可选项。默认地址：http://localhost:11434';
 
 $lang->ai->models->proxyTypes = array();
 $lang->ai->models->proxyTypes['']       = '不使用代理';

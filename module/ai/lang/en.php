@@ -754,6 +754,7 @@ $lang->ai->models->key            = 'API Key';
 $lang->ai->models->secret         = 'Secret Key';
 $lang->ai->models->resource       = 'Resource';
 $lang->ai->models->deployment     = 'Deployment';
+$lang->ai->models->model          = 'Model Identifier';
 $lang->ai->models->proxyType      = 'Proxy Type';
 $lang->ai->models->proxyAddr      = 'Proxy Address';
 $lang->ai->models->description    = 'Description';
@@ -801,15 +802,21 @@ $lang->ai->models->typeList = array();
 $lang->ai->models->typeList['openai-gpt35'] = 'OpenAI / GPT-3.5';
 $lang->ai->models->typeList['openai-gpt4']  = 'OpenAI / GPT-4';
 $lang->ai->models->typeList['baidu-ernie']  = 'Baidu / ERNIE';
+$lang->ai->models->typeList['openrouter']   = 'OpenRouter';
+$lang->ai->models->typeList['ollama']       = 'Ollama (Local)';
 
 $lang->ai->models->vendorList = new stdclass();
 $lang->ai->models->vendorList->{'openai-gpt35'} = array('openai' => 'OpenAI', 'azure' => 'Azure', 'openaiCompatible' => 'Custom');
 $lang->ai->models->vendorList->{'openai-gpt4'}  = array('openai' => 'OpenAI', 'azure' => 'Azure', 'openaiCompatible' => 'Custom');
 $lang->ai->models->vendorList->{'baidu-ernie'}  = array('baidu' => 'Baidu Qianfan LLM Platform');
+$lang->ai->models->vendorList->{'openrouter'}   = array('openrouter' => 'OpenRouter');
+$lang->ai->models->vendorList->{'ollama'}       = array('ollama' => 'Ollama');
 
 $lang->ai->models->vendorTips = new stdclass();
 $lang->ai->models->vendorTips->azure            = 'OpenAI GPT version is specified during model deployment creation on Azure.';
 $lang->ai->models->vendorTips->openaiCompatible = 'Custom API needs to support Function Calling, otherwise some functions may not work properly.';
+$lang->ai->models->vendorTips->openrouter       = 'OpenRouter provides access to hundreds of models. Enter the model identifier (e.g. anthropic/claude-3.5-sonnet, openai/gpt-4o).';
+$lang->ai->models->vendorTips->ollama           = 'Ollama runs models locally. API key is optional for local deployments. Default address: http://localhost:11434';
 
 $lang->ai->models->proxyTypes = array();
 $lang->ai->models->proxyTypes['']       = 'No Proxy';

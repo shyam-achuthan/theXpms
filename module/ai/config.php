@@ -6,13 +6,16 @@ $config->ai->vendorList['openai']['credentials']           = array('key');
 $config->ai->vendorList['azure']['credentials']            = array('key', 'resource', 'deployment');
 $config->ai->vendorList['openaiCompatible']['credentials'] = array('key', 'base');
 $config->ai->vendorList['baidu']['credentials']            = array('key', 'secret');
+$config->ai->vendorList['openrouter']['credentials']       = array('key', 'model');
+$config->ai->vendorList['ollama']['credentials']           = array('base', 'model');
+$config->ai->vendorList['ollama']['optionalCredentials']   = array('key');
 
-$config->ai->models = array('openai-gpt35' => 'openai', 'openai-gpt4' => 'openai', 'baidu-ernie' => 'ernie');
+$config->ai->models = array('openai-gpt35' => 'openai', 'openai-gpt4' => 'openai', 'baidu-ernie' => 'ernie', 'openrouter' => 'openai', 'ollama' => 'openai');
 
 /* OpenAI GPT configurations. */
 $config->ai->openai = new stdclass();
 $config->ai->openai->api = new stdclass();
-$config->ai->openai->api->vendor = array('openai', 'azure', 'openaiCompatible');
+$config->ai->openai->api->vendor = array('openai', 'azure', 'openaiCompatible', 'openrouter', 'ollama');
 $config->ai->openai->api->openai = new stdclass();
 $config->ai->openai->api->openai->version    = 'v1';                           // OpenAI API version, required.
 $config->ai->openai->api->openai->format     = 'https://api.openai.com/%s/%s'; // OpenAI API format, args: API version, API name.
@@ -26,6 +29,12 @@ $config->ai->openai->api->azure->authFormat  = 'api-key: %s';                  /
 $config->ai->openai->api->openaiCompatible = new stdclass();
 $config->ai->openai->api->openaiCompatible->format     = '%s/%s';                    // OpenAI API format, args: API base URL, API name.
 $config->ai->openai->api->openaiCompatible->authFormat = 'Authorization: Bearer %s'; // OpenAI API auth header format.
+$config->ai->openai->api->openrouter = new stdclass();
+$config->ai->openai->api->openrouter->format     = 'https://openrouter.ai/api/v1/%s'; // OpenRouter API format, arg: API name.
+$config->ai->openai->api->openrouter->authFormat = 'Authorization: Bearer %s';        // OpenRouter API auth header format.
+$config->ai->openai->api->ollama = new stdclass();
+$config->ai->openai->api->ollama->format     = '%s/v1/%s';                    // Ollama API format, args: base URL, API name.
+$config->ai->openai->api->ollama->authFormat = 'Authorization: Bearer %s';    // Ollama API auth header format.
 $config->ai->openai->api->methods = array('function' => 'chat/completions', 'chat' => 'chat/completions', 'completion' => 'completions');
 
 $config->ai->openai->params = new stdclass();
@@ -40,8 +49,8 @@ $config->ai->openai->params->completion->required = array('prompt', 'max_tokens'
 $config->ai->openai->params->completion->optional = array('suffix', 'temperature', 'top_p', 'n', 'stream', 'logprobs', 'echo', 'stop', 'presence_penalty', 'frequency_penalty', 'best_of', 'logit_bias', 'user');
 
 $config->ai->openai->model = new stdclass();
-$config->ai->openai->model->chat       = array('openai-gpt35' => 'gpt-3.5-turbo', 'openai-gpt4' => 'gpt-4-1106-preview');
-$config->ai->openai->model->function   = array('openai-gpt35' => 'gpt-3.5-turbo', 'openai-gpt4' => 'gpt-4-1106-preview');
+$config->ai->openai->model->chat       = array('openai-gpt35' => 'gpt-3.5-turbo', 'openai-gpt4' => 'gpt-4-1106-preview', 'openrouter' => '', 'ollama' => '');
+$config->ai->openai->model->function   = array('openai-gpt35' => 'gpt-3.5-turbo', 'openai-gpt4' => 'gpt-4-1106-preview', 'openrouter' => '', 'ollama' => '');
 $config->ai->openai->model->completion = 'gpt-3.5-turbo-instruct';
 
 $config->ai->openai->contentTypeMapping = array('Content-Type: application/json' => array('', 'function', 'chat', 'completion'), 'Content-Type: multipart/form-data' => array());
